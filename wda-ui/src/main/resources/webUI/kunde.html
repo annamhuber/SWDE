@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>
+		<!--
+		Author: Cedric Hildbrand
+		Last Edit: 16.05.2019
+		-->
+        <title>SWDE G04 WDA - Kunden</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" crossorigin="anonymous">
+ 		<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css" crossorigin="anonymous">
+	</head>
+
+    <body>
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">G04 WDA</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item" id="wetterdaten" active>
+                        <a class="nav-link" href="wetterdaten" id="nav_wetterdaten">Wetterdaten</a>
+                    </li>
+                    <li class="nav-item" id="kundendaten">
+                        <a class="nav-link" href="kundendaten" id="nav_kundendaten">Kundendaten</a>
+                    </li>
+                    <li class="nav-item" id="benutzer">
+                        <a class="nav-link" href="benutzer" id="nav_benutzer">Benutzer</a>
+                    </li>
+					<li class="nav-item" id="logout">
+                        <a class="nav-link" href="#" id="nav_logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <br>
+
+        <div id="customerscontainer" class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>Kunden</h1>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4">
+				     <button id="newcustomer_button" style="width:180px" type="button" class="btn btn-info">Neuer Kunde</button>
+				</div>
+            </div>
+			<br>
+			<div id="newcustomer_container" class="row d-none">
+				<div class="col-md-6">
+					<h4>Neuer Kunde</h4>
+					<form id="newcustomer_form">
+				    <div class="input-group mb-3">
+	
+						<input type="text" placeholder="Kunde" required class="form-control" id="new_customername">
+					</div>
+				    <div class="input-group mb-3">
+						<input type="text" required class="form-control" placeholder="Daten (String)" id="new_customerdata" >
+					</div>
+					 <button style="width:180px" type="submit" class="btn btn-info">Hinzufügen</button>
+					</form>
+				</div>
+            </div>
+			<br>
+			<div id="editcustomer_container" class="row d-none">
+				<div class="col-md-6">
+					<h4>Kunde bearbeiten</h4>
+					<div style="margin-bottom:10px">KundenID: <div id="kundeid" style="display:inline;">idhere</div></div>
+				    <form id="editcustomer_form">
+					<div class="input-group mb-3">
+	
+						<input type="text" placeholder="Kundenname" required class="form-control" id="modify_customername">
+					</div>
+				    <div class="input-group mb-3">
+						<input type="text" required class="form-control" placeholder="Passwort" id="modify_customerdata" >
+					</div>
+					
+					<button style="width:180px" type="submit" class="btn btn-info">Verändern</button>
+					<button id="deletecustomer_button" style="width:180px" type="button" class="btn btn-info">Kunde löschen</button>
+					</form>
+				</div>
+            </div>
+			<br>
+            <div id="showcustomers_container" class="row">
+			    <div class="col-md-12">
+					<div style="height:400px;" id="dataTableDiv" class="col-md-12 datacontainer">
+						<table id="dataTableCustomers" class="display" style="width:100%"></table>			
+					</div>
+				</div>
+			</div>
+		</div>
+    </body>
+
+
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/de-ch.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/canvasjs.min.js"></script>	
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>	
+	<script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>	
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.8/download.min.js"></script>	
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>		
+	
+	<!-- Selfwritten Scripts -->
+	<script src="socket.js"></script>	
+	<script src="login.js"></script>
+	<script src="kunde.js"></script>
+
+</html>

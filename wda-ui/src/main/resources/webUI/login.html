@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+		<!--
+		Author: Cedric Hildbrand
+		Last Edit: 16.05.2019
+		-->
+        <title>SWDE G04 WDA - Login</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    </head>
+
+    <body>
+        <form class="logincontainer" action="index.html">
+            <img class="mb-4 centerit" src="https://www.hslu.ch/-/media/campus/common/images/header/ogimagehslu.jpg" alt="" width="72" height="72">
+            <h1 class="h3 mb-3 font-weight-normal centerit">Bitte anmelden</h1>
+            <input type="input" id="inputUsername" class="form-control" placeholder="Benutzername" required autofocus>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Passwort" required>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Anmelden</button>
+        </form>
+    </body>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+	<style>
+        .logincontainer {
+            position: absolute;
+            width: 300px;
+            height: 200px;
+            z-index: 15;
+            top: 50%;
+            left: 50%;
+            margin: -300px 0 0 -150px;
+        }
+        .logincontainer .form-control {
+            position: relative;
+            box-sizing: border-box;
+            height: auto;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .logincontainer .form-control:focus {
+            z-index: 2;
+        }
+        .logincontainer input[type="email"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+        .logincontainer input[type="password"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+        .centerit {
+            text-align:center;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+	
+	<!-- Selfwritten Scripts -->
+	<script src="socket.js"></script>	
+	<script src="login.js"></script>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>
+		<!--
+		Author: Cedric Hildbrand
+		Last Edit: 16.05.2019
+		-->
+        <title>SWDE G04 WDA - Wetterdaten</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/css/tempusdominus-bootstrap-4.min.css" />
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" crossorigin="anonymous">
+ 		<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css" crossorigin="anonymous">
+	</head>
+
+    <body>
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">G04 WDA</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item" id="wetterdaten" active>
+                        <a class="nav-link" href="wetterdaten" id="nav_wetterdaten">Wetterdaten</a>
+                    </li>
+                    <li class="nav-item" id="kundendaten">
+                        <a class="nav-link" href="kundendaten" id="nav_kundendaten">Kundendaten</a>
+                    </li>
+                    <li class="nav-item" id="benutzer">
+                        <a class="nav-link" href="benutzer" id="nav_benutzer">Benutzer</a>
+                    </li>
+					<li class="nav-item" id="logout">
+                        <a class="nav-link" href="#" id="nav_logout">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <br>
+
+        <div id="wetterdatencontainer" class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1>Wetterdaten</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 form-group">
+                    <select  data-width="100%" id="cityselect" class="selectpicker" multiple data-live-search="true" title="Ortschaft"></select>
+                </div>
+                <div class="col-md-3 form-group">
+                    <select data-width="100%" id="abfrageselect" class="selectpicker" data-live-search="true" title="Abfrage">
+                        <option value="2">Abfrage A02</option>
+                        <option value="3">Abfrage A03</option>
+                        <option value="4">Abfrage A04</option>
+						<option value="5">Abfrage A05</option>
+						<option value="6">Abfrage A06</option>
+						<option value="7">Abfrage A07</option>
+						<option value="8">Abfrage A08</option>
+						<option value="9">Abfrage A09</option>
+						<option value="10">Abfrage A10</option>
+						<option value="11">Abfrage A11</option>
+						<option value="12">Abfrage A12</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <div class="input-group date" id="datetimepicker7" data-target-input="nearest">
+                            <input readonly placeholder="Startzeitpunkt" type="text" class="form-control datetimepicker-input" data-target="#datetimepicker7"/>
+                            <div class="input-group-append" data-target="#datetimepicker7" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 form-group">
+                    <div class="input-group date" id="datetimepicker8" data-target-input="nearest">
+                        <input readonly placeholder="Endzeitpunkt" type="text" id="input-datetimepicker8" class="form-control datetimepicker-input" data-target="#datetimepicker8"/>
+                        <div class="input-group-append" data-target="#datetimepicker8" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 form-group">
+                    <button id="sendabfragebutton" style="width:100%" type="button" class="btn btn-light">Abfragen</button>
+                </div>
+            </div>
+			
+			
+			
+			<!-- Result display -->
+			<!-- Header -->
+			<div class="d-none" id="resultheader">
+				<h2>Resultat</h2>
+				<h5>Exportieren</h5>
+				<div class="row" style="margin-bottom:15px">
+					<div class="col-md-12">
+						<select  data-width="100px" id="exportselect" class="selectpicker" title="Exportformat">
+							<option value="1" selected>JSON</option>
+							<option value="2">CSV</option>
+							<option value="3">XML</option>
+							<option value="4">JPG</option>
+						</select>
+						<button id="exportbutton" type="button" class="btn btn-light">Download</button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-2">
+						<h5>Ortschaft</h5>
+						<div id="ortschaftenholder"></div>
+					</div>
+					<div class="col-md-2">
+						<h5>Abfrage</h5>
+						<div id="abfrageholder"></div>
+					</div>
+					<div class="col-md-4">
+						<div>
+							<h5>Zeitperiode</h5>
+							<div id="zeitperiodenholder"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<br>
+			<!-- Data -->	
+			<div class="row">
+                <div  class="col-md-12">
+					<div style="height:400px;" id="chartContainer" class="d-none datacontainer" ></div>								
+                </div>
+            </div>	
+			<div class="row">
+				<div style="height:400px;" id="dataTableDiv" class="col-md-12 d-none datacontainer">
+					<table id="dataTable" class="display" style="width:100%"></table>			
+				</div>
+            </div>
+        </div>
+    </body>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/de-ch.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha14/js/tempusdominus-bootstrap-4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/canvasjs.min.js"></script>	
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>	
+	<script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>	
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/downloadjs/1.4.8/download.min.js"></script>	
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>	
+	
+	<!-- Selfwritten Scripts -->
+	<script src="socket.js"></script>	
+	<script src="login.js"></script>
+	<script src="wetterdaten.js"></script>
+
+</html>
