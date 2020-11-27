@@ -108,7 +108,7 @@
         <asciidoctorj.pdf.version>1.5.0-alpha.16</asciidoctorj.pdf.version>
         <asciidoctorj.version>1.6.2</asciidoctorj.version>
 
-        <log4j2.version>2.11.2</log4j2.version>
+        <log4j2.version>2.13.3</log4j2.version>
     </properties>
 
     <dependencyManagement>
